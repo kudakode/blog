@@ -1,0 +1,56 @@
+{{ define "head" }}
+<script defer type="application/ld+json">
+  { 
+    "@context": "http://schema.org", 
+    "@type": "WebSite", 
+    "url": {{ .Permalink | absURL }}, 
+    "sameAs": [
+      {{ if .Site.Params.facebook }}"{{ .Site.Params.facebook }}",{{ end }} 
+      "{{ .Site.Params.github }}"
+    ], 
+    "name": "{{ .Title }}", 
+    "logo": {{ "/favicon/favicon-32x32.png" | absURL }}
+  }
+</script>
+{{ end }}
+{{ define "main" }}
+  <main>
+    <div class="container">
+      <header class="banner">
+        <div class="wrapper">
+          <h1 class="banner-title title-xl">{{ .Params.Title }}</h1>
+          <p class="banner-subtitle">{{ .Description }}</p>
+
+          {{ with .Site.GetPage "/articles" }}
+            <a href="{{ .Permalink }}" class="banner-button button button-lg button-outline">Baca Artikel ({{ len (where .Site.RegularPages "Section" "articles") }})</a>
+          {{ end }}
+
+          {{ with .Site.GetPage "/tutorials" }}
+            <a href="{{ .Permalink }}" class="banner-button button button-lg button-outline">Jelajahi Tutorial ({{ len (.Site.GetPage "/tutorials").Pages }})</a>
+          {{ end }}
+        </div>
+      </header>
+    </div>
+
+    {{ with .Site.GetPage "/tutorials" }}
+      <section class="section gray">
+        <div class="container">
+          <h2 class="section-title title-lg">Daftar {{ .Title }}</h2>
+          <p class="section-subtitle">{{ .Description }}</p>
+          {{ partial "home/tutorial.html" . }}
+        </div>
+      </section>
+    {{ end }}
+
+    {{ with .Site.GetPage "/articles" }}
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title title-lg">{{ .Title }} Terbaru</h2>
+          <p class="section-subtitle">{{ .Description }}</p>
+          
+          {{ partial "home/article.html" . }}
+        </div>
+      </section>
+    {{ end }}
+  </main>
+{{ end }}

@@ -1,0 +1,72 @@
+{{ define "main" }}
+
+  <main class="section">
+    <div class="container">
+      <h1 class="section-title title title-lg">Hasil Pencarian <span id="search-text"></span></h1>
+      <p class="section-subtitle"><span id="search-count">0</span> Ditemukan</p>
+
+      <div class="row" id="results"></div>      
+    </div>
+  </main>
+
+{{ end }}
+
+{{ define "script" }}
+  <script src="https://unpkg.com/lunr/lunr.js"></script>
+  <script>
+    const pages = {
+      {{ range where .Site.RegularPages "Section" "in" (slice "articles" "tutorials") }}
+        "{{ .Permalink }}": {
+          title: "{{ .Title }}",
+          url: "{{ .Permalink }}",
+          section: "{{ .Parent.Title }}",
+          sectionURL: "{{ .Parent.Permalink }}",
+          summary: "{{ .Summary }}",
+        }
+      {{ end }}
+    }
+    const q = new URLSearchParams(window.location.search).get('q')
+
+    const idx = lunr(function () {
+      this.ref('id')
+      this.field('title', { boost: 15 })
+      this.field('url')
+      this.field('section')
+
+      for (const key in pages) {
+        this.add({
+          id: key,
+          title: pages[key].title,
+          url: pages[key].url,
+          section: pages[key].section,
+        })
+      }
+
+    })
+
+    const result = idx.search(q)
+
+    document.getElementById('search-text').innerHTML = `"${q}"`
+    document.getElementById('search-count').innerHTML = result.length
+
+    if (result.length) {
+      const resultEl = document.getElementById('results')
+
+      result.forEach(({ ref }) => {
+        const page = pages[ref]
+
+        resultEl.innerHTML += `
+          <div class="row-item post-col">
+            <div class="post-card post-card-content">
+              <a href="${page.sectionURL}" class="post-card-category">${page.section}</a>
+              <a href="${page.url}" class="post-card-link"><h2 class="post-card-title title title-sm">${page.title}</h2></a>
+              <div class="post-card-text">
+                ${page.summary  }
+              </div>
+            </div>
+          </div>
+        `
+      })
+    }
+  </script>
+{{ end }}

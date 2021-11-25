@@ -1,0 +1,26 @@
+{{ with .Site.GetPage "/articles" }}
+  <div class="section-row row row-md">
+    {{ range first 6 (where .Site.RegularPages "Section" "articles")  }}
+      <div class="row-item post-col post-col-lg">
+        <div class="post-card">
+          <a href="{{ .Permalink }}"><img src="/thumbnails/articles/{{ .Params.image }}" alt="{{ .Title }}" class="post-card-thumbnail"></a>
+            <div class="post-card-content">
+              <a href="{{ .Parent.Permalink }}" class="post-card-category">{{ .Parent.Name }}</a>
+              <a href="{{ .Permalink }}" class="post-card-link"><h3 class="post-card-title title">{{ .Title }}</h3></a>
+              <div class="post-card-meta">
+                <time>{{ .Date.Format "1 January 2006" }}</time> {{ with .Params.author }}- <span>{{ .Params.author }}</span>{{ end }}
+              </div>
+              <div class="post-card-text">
+                {{ .Summary }}
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="text-center">
+    <a href="{{ .Permalink }}" class="button button-lg button-outline">Lebih Banyak</a>
+  </div>
+{{ end }}

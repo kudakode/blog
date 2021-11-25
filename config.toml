@@ -1,0 +1,37 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'Kudakode'
+
+summaryLength = 15
+
+disableKinds = ['taxonomy', 'term']
+
+[permalinks]
+  articles = '/:title'
+  tutorials = '/:title'
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    noClasses = false
+
+[params]
+  description = 'Tempat belajar pemrograman dengan mudah dan materi lengkap'
+  github = 'kudakode'
+  facebook = ''
+  twitter = ''
+  youtube = ''
+
+[menu]
+  [[menu.main]]
+    identifier = 'home'
+    name = 'Beranda'
+    url = '/'
+  [[menu.main]]
+    identifier = 'about'
+    name = 'Tentang'
+    url = '/about'
+  [[menu.main]]
+    identifier = 'contact'
+    name = 'Kontak'
+    url = '/contact'

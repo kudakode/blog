@@ -1,0 +1,29 @@
+{{ define "pagination" }}
+  {{ if gt .TotalPages 1 }}
+    <ul class="row">
+      {{ $active := .PageNumber }}
+
+      {{ if .HasPrev }}
+        <li class="row-item">
+          <a href="{{ .Prev.URL }}" class="pagination-link"><i class="icon ion-ios-arrow-back"></i></a>
+        </li>
+      {{ end }}
+
+      {{ range .Pagers }}
+        <li class="row-item">
+          {{ if eq $active .PageNumber }}
+            <span class="pagination-link active">{{ .PageNumber }}</span>
+          {{ else }}
+            <a href="{{ .URL }}" class="pagination-link">{{ .PageNumber }}</a>
+          {{ end }}
+        </li>
+      {{ end }}
+
+      {{ if .HasNext }}
+        <li class="row-item">
+          <a href="{{ .Next.URL }}" class="pagination-link"><i class="icon ion-ios-arrow-forward"></i></a>
+        </li>
+      {{ end }}
+    </ul>
+  {{ end }}
+{{ end }}

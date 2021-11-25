@@ -1,0 +1,18 @@
+{{ with .Site.GetPage "/tutorials" }}
+  <div class="row">
+    {{ range .Pages }}
+      <div class="row-item post-col">
+        <a href="{{ .Permalink }}">
+          <div class="post-card post-card-content">
+            <div class="row-center">
+              <h3 class="post-card-title title"><i class="devicon-{{ .Params.icon }}-plain mr-2"></i> {{ .Name }}</h3>
+            </div>
+            <p class="post-card-text">
+              {{ .Description }}
+            </p>
+          </div>
+        </a>
+      </div>
+    {{ end }}
+  </div>
+{{ end }}

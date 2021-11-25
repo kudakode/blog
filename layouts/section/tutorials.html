@@ -1,0 +1,117 @@
+{{ define "head" }}
+<script defer type="application/ld+json">
+  { 
+    "@context": "http://schema.org", 
+    "@type": "WebSite", 
+    "url": {{ .Permalink | absURL }}, 
+    "sameAs": [
+      {{ if .Site.Params.facebook }}"{{ .Site.Params.facebook }}",{{ end }} 
+      "{{ .Site.Params.github }}"
+    ], 
+    "name": "{{ .Title }}", 
+    "logo": {{ "/favicon/favicon-32x32.png" | absURL }}
+  }
+</script>
+{{ end }}
+
+{{ define "main" }}
+  {{ if .Params.parent }}
+    {{ template "parent" . }}
+  {{ else if .Params.child }}
+    {{ template "section" . }}
+  {{ else }}
+    {{ template "child" . }}
+  {{ end }}
+{{ end }}
+
+{{ define "parent" }}
+  <main>
+    <section class="section">
+      <div class="container">
+        {{ partial "breadcrumb.html" . }}
+        <header>
+          <h1 class="section-title title title-lg">Daftar {{ .Title }}</h1>
+          <p class="section-subtitle">{{ .Description }}</p>
+        </header>
+
+        <div class="row">
+          {{ range .Pages }}
+            <div class="row-item post-col">
+              <a href="{{ .Permalink }}">
+                <div class="post-card post-card-content">
+                  <div class="row-center">
+                    <h3 class="post-card-title title"><i class="devicon-{{ .Params.icon }}-plain mr-2"></i> {{ .Name }}</h3>
+                  </div>
+                  <p class="post-card-text">
+                    {{ .Description }}
+                  </p>
+                </div>
+              </a>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+  </main>
+{{ end }}
+
+{{ define "section" }}
+  <main>
+    <div class="container">
+      <article class="article section">
+        {{ partial "breadcrumb.html" . }}
+        <header>
+          <h1 class="section-title title title-lg">{{ .Title }}</h1>
+          <p class="section-subtitle">{{ .Description }}</p>
+        </header>
+
+        <ol>
+          {{ range $key, $page := .Pages.ByDate }}
+            <li>
+              <a href="{{ .Permalink }}" class="article-list-link row-center row-between">
+                <span>{{ add $key 1 }}. {{ .Title }}</span>
+                <span>{{ .ReadingTime }} Menit</span>
+              </a>
+            </li>
+          {{ end }}
+        </ol>
+      </article>
+    </div>
+  </main>
+{{ end }}
+
+{{ define "child" }}
+  <main>
+    <div class="container">
+      <article class="article section">
+        {{ partial "breadcrumb.html" . }}
+        <header>
+          <h1 class="section-title title title-lg">Belajar {{ .Title }}</h1>
+          <p class="section-subtitle">{{ .Description }}</p>
+        </header>
+
+        <ol>
+          {{ range .Pages.ByDate }}
+            <li class="mb-6">
+              <div class="row-between row-center mb-3">
+                <h2 class="title">{{ .Title }}</h2>
+                <a href="{{ .Permalink }}"><i class="icon ion-ios-share-alt"></i></a>
+              </div>
+              
+              <ol>
+                {{ range $key, $page := .Pages.ByDate }}
+                  <li>
+                    <a href="{{ .Permalink }}" class="article-list-link row-center row-between">
+                      <span>{{ add $key 1 }}. {{ .Title }}</span>
+                      <span>{{ .ReadingTime }} Menit</span>
+                    </a>
+                  </li>
+                {{ end }}
+              </ol>
+            </li>
+          {{ end }}
+        </ol>
+      </article>
+    </div>
+  </main>
+{{ end }}

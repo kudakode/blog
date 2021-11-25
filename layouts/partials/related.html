@@ -1,0 +1,19 @@
+{{ $related := .Site.RegularPages.Related . | first 3 }}
+  {{ with $related }}
+    <div class="row">
+      {{ range . }}
+        <div class="row-item post-col post-col-sm">
+          <div class="post-card">
+            <a href="{{ .Permalink }}"><img src="/thumbnails/{{ .Params.Image }}" alt="{{ .Title }}" class="post-card-thumbnail"></a>
+            <div class="post-card-content">
+              <a href="{{ .Parent.Permalink }}" class="post-card-category">{{ .Parent.Name }}</a>
+              <a href="{{ .Permalink }}" class="post-card-link"><h3 class="post-card-title title title-sm">{{ .Title }}</h3></a>
+              <div class="post-card-meta">
+                <time>{{ .Date.Format "1 January 2006" }}</time>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+{{ end }}

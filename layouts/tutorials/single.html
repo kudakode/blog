@@ -1,0 +1,88 @@
+{{ define "head" }}
+<script defer type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": {{ .Title }},
+    "author": {
+      "@type": "Person",
+      "name": "{{ .Site.Params.github }}"
+    },
+    "datePublished": "{{ .Date.Format "2006-01-02" }}",
+    "description": {{ .Description }},
+    "wordCount": {{ .WordCount }},
+    "mainEntityOfPage": "True",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+     "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Title }}",
+      "logo": {
+        "@type": "imageObject",
+        "url": {{ "/favicon/favicon-32x32.png" | absURL }}
+      }
+    }
+  }
+</script>
+{{ end }}
+
+{{ define "main" }}
+
+  <main>
+    {{ $tutorial := . }}
+    <div class="container">
+      <div class="section row row-lg">
+        <div class="article-col row-item">
+          <article class="post-single">
+            {{ partial "breadcrumb.html" . }}
+            <header>
+              <h1 class="post-title title title-lg">{{ .Title }}</h1>
+            </header>
+            <div class="post-meta">
+              <time>{{ .Date.Format "1 January 2006" }}</time>
+            </div>
+            <div class="post-toc">
+              <p class="post-toc-title">Daftar Isi</p>
+              {{ .TableOfContents }}
+            </div>
+            <div class="post-content">
+              {{ .Content }}
+            </div>
+          </article>
+
+          {{ if .NextInSection }}
+            <hr class="post-divide">
+            {{ partial "tutorial/nav.html" . }}
+          {{ else if .PrevInSection }}
+            <hr class="post-divide">
+            {{ partial "tutorial/nav.html" . }}
+          {{ end }}
+
+          <hr class="post-divide">
+          <section>{{ partial "comment.html" . }}</section>
+        </div>
+        <div class="article-aside row-item">
+          {{ $parent := .Parent.Parent }}
+          <aside class="aside">
+            <div class="card mb-4">
+              <h2 class="card-title title">{{ $parent.Title }}</h2>
+              <p class="card-content">
+                {{ $parent.Description }}
+              </p>
+            </div>
+            <div class="card mb-4">
+              {{ range $parent.Pages.ByDate }}
+                <h3 class="title title-sm mb-2">{{ .Title }}</h3>
+                <ul class="mb-4">
+                  {{ range $key, $page := .Pages.ByDate }}
+                    <li><a class="aside-list list {{ if eq .Title $tutorial.Title }} active {{ end }}" href="{{ .Permalink }}">{{ add $key 1 }}. {{ .Title }}</a></li>
+                  {{ end }}
+                </ul>
+              {{ end }}
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{{ end }}

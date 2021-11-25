@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  {{ partial "head.html" . }}
+  
+  {{ block "head" . }} {{ end }}
+</head>
+<body>
+
+  {{ partial "navbar.html" . }}
+
+  {{ block "main" . }} {{ end }}
+
+  {{ partial "widget.html" . }}
+
+  {{ partial "footer.html" . }}
+
+  {{ block "script" . }} {{ end }}
+  
+  {{ partial "script.html" . }}
+
+</body>
+</html>

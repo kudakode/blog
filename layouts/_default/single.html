@@ -1,0 +1,103 @@
+{{ define "head" }}
+{{ if ne .Params.type "page" }}
+<script defer type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": {{ .Title }},
+    "author": {
+      "@type": "Person",
+      "name": "{{ .Site.Params.github }}"
+    },
+    "datePublished": "{{ .Date.Format "2006-01-02" }}",
+    "description": {{ .Description }},
+    "wordCount": {{ .WordCount }},
+    "mainEntityOfPage": "True",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+    "image": {
+      "@type": "imageObject",
+      "url": {{ with .Params.image }}{{ delimit (slice "/thumbnails/articles" .) "/" | absURL }}{{ end }}
+     },
+     "publisher": {
+      "@type": "Organization",
+      "name": "{{ .Site.Title }}",
+      "logo": {
+        "@type": "imageObject",
+        "url": {{ "/favicon/favicon-32x32.png" | absURL }}
+      }
+    }
+  }
+</script>
+{{ else }}
+<script defer type="application/ld+json">
+  { 
+    "@context": "http://schema.org", 
+    "@type": "WebSite", 
+    "url": {{ .Permalink | absURL }}, 
+    "sameAs": [
+      {{ if .Site.Params.facebook }}"{{ .Site.Params.facebook }}",{{ end }} 
+      "{{ .Site.Params.github }}"
+    ],  
+    "name": "{{ .Title }}", 
+    "logo": {{ "/favicon/favicon-32x32.png" | absURL }}
+  }
+</script>
+{{ end }}
+{{ end }}
+
+{{ define "main" }}
+
+  <main>
+    <div class="container">
+      <div class="section article">
+        <article>
+          {{ partial "breadcrumb.html" . }}
+          <header>
+            <h1 class="post-title title title-lg">{{ .Title }}</h1>
+          </header>
+          <div class="post-meta">
+            <time>{{ .Date.Format "1 January 2006" }}</time> {{ with .Params.author }}- <span>{{ .Params.author }}</span>{{ end }}
+          </div>
+          {{ if .Params.image }}
+            <img src="/thumbnails/articles/{{ .Params.image }}" alt="{{ .Title }}" class="post-image">
+          {{ end }}
+          
+          {{ if ne .Params.type "page" }}
+            <div class="post-toc">
+              <p class="post-toc-title">Daftar Isi</p>
+              {{ .TableOfContents }}
+            </div>
+          {{ end }}
+
+          <div class="post-content">
+            {{ .Content }}
+          </div>
+
+          <ul class="post-tag row row-sm">
+            {{ range (.GetTerms "categories") }}
+              <li class="row-item"><a href="{{ .Permalink }}" class="tag tag-sm">{{ .Title }}</a></li>
+            {{ end }}
+          </ul>
+        </article>
+        
+        {{ if ne .Params.type "page" }}
+          {{ if .Site.RegularPages.Related . }}
+            <hr class="post-divide">
+            <section class="post-related">
+              <h2 class="post-related-title title">Baca Juga</h2>
+
+              {{ partial "related.html" . }}
+            </section>
+          {{ end }}
+        {{ end }}
+
+        <hr class="post-divide">
+
+        <section class="post-related">
+          {{ partial "comment.html" . }}
+        </section>
+      </div>
+    </div>
+  </main>
+
+{{ end }}

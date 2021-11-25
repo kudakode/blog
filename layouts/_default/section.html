@@ -1,0 +1,38 @@
+{{ define "main" }}
+
+<main>
+  <header class="home-banner">
+    <div class="wrapper">
+      <h1 class="home-banner-title">{{ .Title }}</h1>
+      <p class="home-banner-subtitle">{{ .Params.subtitle }}</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrapper">
+      <h2 class="title section-title">{{ .Title }} Terbaru</h2>
+
+      <div class="row post-row">
+        {{ range .Paginator.Pages }}
+          <div class="post-col">
+            <div class="post-card">
+              <img src="/thumbnails/{{ .Params.image }}" class="post-card-thumbnail" alt="{{ .Title }}">
+              <div class="post-card-content">
+                <a href="" class="post-card-category">{{ .CurrentSection.Name }}</a>
+                <h3 class="post-card-title">
+                  <a href="{{ .Permalink }}">{{ .Title }}</a>
+                </h3>
+                <time class="post-card-meta">{{ .Date.Format "2 January 2006" }}</time>
+                <div class="post-card-summary">
+                  {{ .Summary }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+</main>
+
+{{ end }}

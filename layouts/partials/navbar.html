@@ -1,0 +1,53 @@
+<div class="container">
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="/" class="navbar-brand">{{ .Site.Title }}</a>
+    </div>
+
+    <div class="navbar-item row-center">
+      <ul class="navbar-item row row-md row-center">
+        {{ with .Site.GetPage "/articles" }}
+          <li class="navbar-item navbar-desktop row-item row-center dropdown dropdown-hover">
+            <a href="{{ .Permalink }}" class="row-center">{{ .Name }} <i class="icon ion-md-arrow-dropdown ml-2"></i></a>
+            <ul class="dropdown-menu">
+              {{ range first 5 .Pages }}
+              <li><a class="dropdown-item" href="{{ .Permalink }}"><i class="icon ion-ios-globe mr-3"></i>{{ .Name }}</a></li>
+              {{ end }}
+              <li><a class="dropdown-item" href="{{ .Permalink }}"><i class="icon ion-ios-globe mr-3"></i>Lainya</a></li>
+            </ul>
+          </li>
+        {{ end }}
+        {{ with .Site.GetPage "/tutorials" }}
+          <li class="navbar-item navbar-desktop row-item row-center dropdown dropdown-hover">
+            <a href="{{ .Permalink }}" class="row-center">{{ .Name }} <i class="icon ion-md-arrow-dropdown ml-2"></i></a>
+            <ul class="dropdown-menu">
+              {{ range first 5 .Pages }}
+              <li><a class="dropdown-item" href="{{ .Permalink }}"><i class="icon ion-ios-code mr-3"></i>{{ .Name }}</a></li>
+              {{ end }}
+              <li><a class="dropdown-item" href="{{ .Permalink }}"><i class="icon ion-ios-code mr-3"></i>Lainya</a></li>
+            </ul>
+          </li>
+        {{ end }}
+        {{ with .Site.GetPage "/search" }}
+          <li class="navbar-search navbar-item row-item row-center dropdown">
+            <button class="dropdown-toggle"><i class="icon ion-ios-search text-lg dropdown-icon"></i></button>
+            <div class="dropdown-menu">
+              <form action="/search" method="get" class="input-group row-center">
+                <input type="search" name="q" placeholder="Cari Sesuatu" class="input">
+                <button class="button button-blue"><i class="icon ion-ios-search"></i></button>
+              </form>
+            </div>
+          </li>
+        {{ end }}
+        <li class="navbar-item row-item row-center dropdown navbar-mobile">
+          <button class="dropdown-toggle"><i class="icon ion-ios-menu text-xl dropdown-icon"></i></button>
+          <ul class="dropdown-menu">
+            {{ range .Site.Sections }}
+              <li><a class="dropdown-item" href="{{ .Permalink }}"><i class="icon ion-ios-paper mr-3"></i>{{ .Name }}</a></li>
+            {{ end }}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,95 @@
+{{ define "head" }}
+<script defer type="application/ld+json">
+  { 
+    "@context": "http://schema.org", 
+    "@type": "WebSite", 
+    "url": {{ .Permalink | absURL }}, 
+    "sameAs": [
+      {{ if .Site.Params.facebook }}"{{ .Site.Params.facebook }}",{{ end }} 
+      "{{ .Site.Params.github }}"
+    ],
+    "name": "{{ .Title }}", 
+    "logo": {{ "/favicon/favicon-32x32.png" | absURL }}
+  }
+</script>
+{{ end }}
+
+{{ define "row" }}
+  <div class="row-item post-col post-col-lg">
+    <div class="post-card">
+      <a href="{{ .Permalink }}"><img src="/thumbnails/articles/{{ .Params.image }}" alt="{{ .Title }}" class="post-card-thumbnail"></a>
+      <div class="post-card-content">
+        <a href="{{ .Parent.Permalink }}" class="post-card-category">{{ .Parent.Name }}</a>
+        <a href="{{ .Permalink }}" class="post-card-link"><h3 class="post-card-title title">{{ .Title }}</h3></a>
+        <div class="post-card-meta">
+          <time>{{ .Date.Format "1 January 2006" }}</time> {{ with .Params.author }}- <span>{{ .Params.author }}</span>{{ end }}
+        </div>
+        <div class="post-card-text">
+          {{ .Summary }}
+        </div>
+      </div>
+    </div>
+  </div>
+{{ end }}
+
+{{ define "main" }}
+  
+  {{ if .Params.parent }}
+    {{ template "parent" . }}
+  {{ else }}
+    {{ template "child" . }}
+  {{ end }}
+
+{{ end }}
+
+{{ define "parent" }}
+  <main>
+    <section class="section">
+      <div class="container">
+        {{ partial "breadcrumb.html" . }}
+        <header>
+          <h1 class="section-title title title-lg">{{ .Title }} Terbaru</h1>
+          <p class="section-subtitle">{{ .Description }}</p>
+        </header>
+
+        <ul class="section-tags row row-sm">
+          {{ range .Pages }}
+            <li class="row-item"><a class="tag" href="{{ .Permalink }}" class="">{{ .Title }}</a></li>
+          {{ end }}
+        </ul>
+
+        {{ $paginator := (.Paginate ( where .Site.RegularPages "Section" "articles" ) 6 ) }}
+        <div class="row">
+          {{ range $paginator.Pages }}
+            {{ template "row" . }}
+          {{ end }}
+        </div>
+
+        {{ template "pagination" $paginator }}
+      </div>
+    </section>
+  </main>
+{{ end }}
+
+{{ define "child" }}
+  <main>
+    <section class="section">
+      <div class="container">
+        {{ partial "breadcrumb.html" . }}
+        <header>
+          <h1 class="section-title title title-lg">Artikel {{ .Title }}</h1>
+          <p class="section-subtitle">{{ .Params.Description }}</p>
+        </header>
+
+        {{ $paginator := (.Paginator 6) }}
+        <div class="row">
+          {{ range $paginator.Pages }}
+            {{ template "row" . }}
+          {{ end }}
+        </div>
+
+        {{ template "pagination" $paginator }}
+      </div>
+    </section>
+  </main>
+{{ end }}

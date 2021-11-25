@@ -1,0 +1,36 @@
+<ul class="row-between post-related">
+  <li>
+    {{ with .PrevInSection }}
+      <a class="row-center link" href="{{ .Permalink }}"><i class="icon ion-ios-arrow-back mr-2"></i> {{ .Title }}</a>
+    {{ else }}
+      {{ $section := .Parent }}
+      {{ range $key, $page := .Parent.Parent.Pages.ByDate }}
+        {{ if eq $page.Title $section.Title }}
+          {{ $prevSection := index .Parent.Pages.ByDate (sub $key 1) }}
+          {{ with $prevSection }}
+            {{ range last 1 .Pages.ByDate }}
+              <a class="row-center link" href="{{ .Permalink }}"><i class="icon ion-ios-arrow-back mr-2"></i> {{ .Title }}</a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </li>
+  <li>
+    {{ with .NextInSection }}
+      <a class="row-center link" href="{{ .Permalink }}">{{ .Title }} <i class="icon ion-ios-arrow-forward ml-2"></i></a>
+    {{ else }}
+      {{ $section := .Parent }}
+      {{ range $key, $page := .Parent.Parent.Pages.ByDate }}
+        {{ if eq $page.Title $section.Title }}
+          {{ $nextSection := index .Parent.Pages.ByDate (add $key 1) }}
+          {{ with $nextSection }}
+            {{ range first 1 .Pages.ByDate }}
+              <a class="row-center link" href="{{ .Permalink }}">{{ .Title }} <i class="icon ion-ios-arrow-forward ml-2"></i></a>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </li>
+</ul>

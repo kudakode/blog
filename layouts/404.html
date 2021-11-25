@@ -1,0 +1,30 @@
+{{ define "head" }}
+<script defer type="application/ld+json">
+  { 
+    "@context": "http://schema.org", 
+    "@type": "WebSite", 
+    "url": {{ .Permalink | absURL }}, 
+    "sameAs": [
+      "{{ .Site.Params.facebook }}", 
+      "{{ .Site.Params.github }}"
+    ], 
+    "name": "{{ .Title }}", 
+    "logo": {{ "/favicon/favicon-32x32.png" | absURL }}
+  }
+</script>
+{{ end }}
+
+{{ define "main" }}
+  
+  <main class="section">
+    <div class="container">
+      <header>
+        <h1 class="section-title title title-lg">Halaman Tidak Ditemukan</h1>
+        <p class="section-subtitle">Halaman yang dituju tidak ditemukan</p>
+      </header>
+
+      <a href="/" class="button button-lg button-outline">Beranda</a>
+    </div>
+  </main>
+
+{{ end }}
